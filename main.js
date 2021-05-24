@@ -1,15 +1,16 @@
 song = "";
+
+
+function preload() {
+
+    song = loadSound("music.mp3");
+}
 leftWirstX=0;
 leftWristY=0;
 rightWristX=0;
 rightWristY=0;
 scoreleftWrist=0;
 ScorerightWrist=0;
-
-function preload() {
-
-    song = loadSound("music.mp3");
-}
 
 function setup() {
 
@@ -26,6 +27,25 @@ function setup() {
 function modelLoaded() {
 
     console.log('posenet is Initialized')
+}
+
+function gotPoses(results) {
+
+    if(results.length > 0) 
+    {
+        console.log(results);
+        ScorerightWrist = results[0].pose.keypoints[10].score;
+        scoreleftWrist= results[0].pose.keypoints[9].score;
+        console.log("ScorerightWrist =" + ScorerightWrist + "scoreleftWrist = " + scoreleftWrist);
+
+        leftWristX = results[0].pose.leftWrist.x;
+        leftWristY = results[0].pose.leftWrist.y
+        console.log("leftWristX = " + leftWristX +"leftWristY = " + leftWristY);
+
+        rightWristX = results[0].pose.rightWrist.x;
+        rightWristY = results[0].pose.rightWrist.y;
+        console.log("rightWristX = " + rightWristX +"rightWristY = " + rightWristY);
+    }
 }
 
 function draw(){
@@ -64,10 +84,8 @@ function draw(){
         document.getElementById("Speed").innerHTML = "Speed = 2.5x";
         song.rate(2.5)
     }
-    
-    }
 
-    
+    }
 
     if (scoreleftWrist > 0.2) {
 
@@ -87,21 +105,3 @@ function play() {
     song.rate(1);
 }
 
-function gotPoses(results) {
-
-    if(results.length > 0) 
-    {
-        console.log(results);
-        ScorerightWrist = results[0].pose.keypoints[10].score;
-        scoreleftWrist= results[0].pose.keypoints[9].score;
-        console.log("scoreleftWrist =" + scoreleftWrist + "scoreleftWrist = " + scoreleftWrist);
-
-        leftWristX = results[0].pose.leftWrist.x;
-        leftWristY = results[0].pose.leftWrist.y
-        console.log("leftWristX = " + leftWristX +"leftWristY = " + leftWristY);
-
-        rightWristX = results[0].pose.rightWrist.x;
-        rightWristY = results[0].pose.rightWrist.y;
-        console.log("rightWristX = " + rightWristX +"rightWristY = " + rightWristY);
-    }
-}
